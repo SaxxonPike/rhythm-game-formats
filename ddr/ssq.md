@@ -45,8 +45,8 @@ time offsets first, then all its corresponding data second.
 
 ### Type 01: tempo changes
 
-Chunk parameter 2: Time frames per second
-Chunk parameter 3: Number of BPM change/stop entries
+- Parameter 2: Time frames per second
+- Parameter 3: Number of BPM change/stop entries
 
 After the time offsets, tempo data is `int32` type and will be 4 bytes per
 entry. The time offset determines what point the song needs to change tempo
@@ -78,7 +78,7 @@ StopLengthInSeconds = DeltaTicks / TicksPerSecond;
 
 ### Type 02: unknown
 
-Chunk parameter 3: Number of entries
+- Parameter 3: Number of entries
 
 After the time offsets, this data is `int16` type and will be 2 bytes per
 entry. Not much else is known about this chunk type. It appears in every
@@ -97,8 +97,8 @@ The observed pattern:
 
 ### Type 03: steps
 
-Chunk parameter 2: Chart difficulty type
-Chunk parameter 3: Number of steps
+- Parameter 2: Chart difficulty type
+- Parameter 3: Number of steps
 
 After the time offsets, this data is `byte` type and will be at least one byte
 per entry (see below for details about why this varies.)
