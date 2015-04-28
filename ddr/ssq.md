@@ -29,7 +29,7 @@ to keep reading until there's no more bytes available to read, or until the
 chunk length doesn't make sense (it's less than a value of 0x0C for example.)
 
 ```
-Offset    Type      Length    Descrption
+Offset(h) Type      Length    Descrption
 +00       int32     4         length of the data in bytes including this header
 +04       int16     2         parameter 1: type of chunk
 +06       int16     2         parameter 2: type-dependent metadata
@@ -85,7 +85,7 @@ entry. Not much else is known about this chunk type. It appears in every
 observed SSQ file so far. It could possibly be linked to what tells the game
 when to end the song and show the results screen.
 
-The observed pattern:
+The observed pattern in hex:
 ```
 0104
 0201
@@ -102,6 +102,25 @@ The observed pattern:
 
 After the time offsets, this data is `byte` type and will be at least one byte
 per entry (see below for details about why this varies.)
+
+#### Difficulty types
+
+Use Parameter 2 with the following table to determine the chart type.
+
+```
+Value(h)  Type
+0114      Single Basic
+0214      Single Standard
+0314      Single Heavy
+0414      Single Beginner
+0614      Single Challenge
+
+0118      Double Basic
+0218      Double Standard
+0318      Double Heavy
+0418      Double Beginner
+0618      Double Challenge
+```
 
 #### Decoding steps
 
