@@ -18,7 +18,7 @@ repo.
 Currently, file formats that don't pertain to the Bemani series of rhythm games
 or other related rhythm games (such as Pump It Up and In The Groove) will not
 be accepted. Exceptions MAY be made for simulator formats such as Stepmania
-and BeMedia Script; however, these formats are already quite well documented
+and Be-Music Source; however, these formats are already quite well documented
 and will probably clutter up the repo.
 
 Contributions that are not for a Bemani rhythm game but do have significance
