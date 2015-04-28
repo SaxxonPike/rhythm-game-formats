@@ -1,4 +1,4 @@
-# bemani-formats
+# Rhythm Game Formats
 
 Ever wondered what makes your favorite rhythm game series tick? Now you know.
 This repository contains information about file formats used by the Bemani
