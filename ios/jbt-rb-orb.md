@@ -6,7 +6,7 @@ All 3 formats are zip files with a non-standard extension. You can use any progr
 
 *pop'n rhythm* also has `.acv` files that are for arcade play data.
 
-## File inside
+## Files inside
 
 All files inside are encrypted using Blowfish (in all games including Android (C++) the class name is `BFCodec`) with a custom set of P and S boxes. The IV seems to be static in all cases. Known keys or IVs will not be disclosed here.
 
