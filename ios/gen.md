@@ -21,7 +21,7 @@ Since all sections in encrypted form start with `b"KDEI"`, it is likely these 4 
 * `0x10`: texture, PVR format, unknown purpose
 * `0x18`: unknown, step format? Class-dumping the game suggests steps are in SSQ format
 * `0x20`: unknown
-* `0x28`: unknown but appears to have only text data, the start byte appears to be `0x0E` (song title?) and `0x15` (artist?) and the strings are null-terminated and padded with zeroes. Each field is allowed 72 bytes. End of the file's purpose is unknown.
+* `0x28`: song information including title and artist. There are usually 3 fields that can hold a maximum of 70 characters. The first 3 bytes of each field is the length of the string (even though the fields are zero-padded, this is not what determines the end and these are not C strings). The string length is in big-endian (example: `00 00 0e` for 15). This field is not encrypted. All strings are encoded in UTF-8
 * `0x30`: unknown; size is always small (0x24 (36) bytes as an example)
 * `0x38`: unknown; same idea as what is at `0x30`
 
@@ -52,10 +52,49 @@ struct gen_hdr {
     uint32_t unk2_offset;
     uint32_t unk2_size;
 
-    uint32_t unk3_offset;
-    uint32_t unk3_size;
+    uint32_t song_info_offset;
+    uint32_t song_info_size;
 
     uint32_t unk4_offset;
     uint32_t unk4_size;
 };
+```
+
+## Reading song information
+
+If the length read does not make sense (exceeds 70) with the 3 bytes, it should be ignored and the data should be read until `\0` with a limit of 70.
+
+The length value is still the same, even if the data is in Japanese (or a multi-byte sequence of any type). The length in the case of *ＴЁЯＲＡ* is still 5, although the actual length of the data in UTF-8 encoding is 13. So for the purpose of data extraction, it may be better to assume to read until `\0` in every case, with a maximum length of 70.
+
+```c
+const unsigned int SECTION_SIZE = 8;
+const unsigned int SONG_SECTION_NUMBER = 5;
+struct gen_hdr gen_info;
+char *data, artist[70], title[70], alt_title[70];
+unsigned int length;
+
+fseek(file_handle, SONG_SECTION_NUMBER * SECTION_SIZE, 0);
+fread(&gen_info.song_info_offset, 4, 1, file_handle);
+fread(&gen_info.song_info_size, 4, 1, file_handle);
+
+fseek(file_handle, gen_info.song_info_offset, 0);
+data = malloc(gen_info.song_info_size);
+fread(data, gen_info.song_info_size, 1, file_handle);
+
+// Get title
+memcpy(&length, data, 3);
+endian_swap_if_necessary(&length);
+memcpy(&title, data + 3, length);
+
+// Alternate title
+memcpy(&length, data + 73, 3);
+endian_swap_if_necessary(&length);
+memcpy(&alt_title, data + 76, length);
+
+// Artist
+memcpy(&length, data + 143, 3);
+endian_swap_if_necessary(&length);
+memcpy(&artist, data + 146, length);
+
+free(data);
 ```
