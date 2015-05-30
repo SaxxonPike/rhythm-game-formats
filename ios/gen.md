@@ -19,7 +19,7 @@ Since all sections in encrypted form start with `b"KDEI"`, it is likely these 4 
 * `0x00`: song (MP3), MP3 format
 * `0x08`: preview song, MP3 format
 * `0x10`: song banner in PVR format. This may not be a very high quality image and is optimised for use with the game engine. As a result, it appears the texture is stored upside-down and mirrored horizontally. To get the correct image, a 180 degree rotation and mirror is required.
-* `0x18`: unknown, step format? Class-dumping the game suggests steps are in SSQ format
+* `0x18`: steps in [SSQ format](https://github.com/SaxxonPike/rhythm-game-formats/blob/master/ddr/ssq.md), with a chunk type 0x09 at the end storing metadata
 * `0x20`: unknown
 * `0x28`: song information including title and artist. There are usually 3 fields that can hold a maximum of 70 characters. The first 3 bytes of each field is the length of the string (even though the fields are zero-padded, this is not what determines the end and these are not C strings). The string length is in big-endian (example: `00 00 0e` for 15). This field is not encrypted. All strings are encoded in UTF-8
 * `0x30`: unknown; size is always small (0x24 (36) bytes as an example)
