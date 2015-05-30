@@ -12,9 +12,11 @@ The game, probably for performance reasons, only decrypts what is absolutely nec
 
 The header starts at `0x00` and ends `0x3F`, leaving room for 7 file offsets and sizes.
 
-Each section is encrypted using a Blowfish implementation. They all start with the characters `b"KDEI"`. Each format described is *after* the decryption process.
+Almost all sections are encrypted using a Blowfish implementation. They all start with the characters `b"KDEI"`. Each format described is *after* the decryption process.
 
 Since all sections in encrypted form start with `b"KDEI"`, it is likely these 4 bytes must be removed prior to beginning decryption.
+
+Offsets and descriptions of content at said offset:
 
 * `0x00`: song (MP3), MP3 format
 * `0x08`: preview song, MP3 format
@@ -46,21 +48,24 @@ struct gen_hdr {
     uint32_t unk_texture1_offset;
     uint32_t unk_texture1_size;
 
+    uint32_t ssq_offset;
+    uint32_t ssq_size;
+
     uint32_t unk1_offset;
     uint32_t unk1_size;
-
-    uint32_t unk2_offset;
-    uint32_t unk2_size;
 
     uint32_t song_info_offset;
     uint32_t song_info_size;
 
-    uint32_t unk4_offset;
-    uint32_t unk4_size;
+    uint32_t unk2_offset;
+    uint32_t unk2_size;
+
+    uint32_t unk3_offset;
+    uint32_t unk3_size;
 };
 ```
 
-## Reading song information
+# Reading song information
 
 If the length read does not make sense (exceeds 70) with the 3 bytes, it should be ignored and the data should be read until `\0` with a limit of 70.
 
@@ -82,23 +87,15 @@ data = malloc(gen_info.song_info_size);
 fread(data, gen_info.song_info_size, 1, file_handle);
 
 // Get title
+// data + 73 for 'alternate' title (may be a romaji title)
+// data + 143 for artist
 memcpy(&length, data, 3);
 endian_swap_if_necessary(&length);
 memcpy(&title, data + 3, length);
 
-// Alternate title
-memcpy(&length, data + 73, 3);
-endian_swap_if_necessary(&length);
-memcpy(&alt_title, data + 76, length);
-
-// Artist
-memcpy(&length, data + 143, 3);
-endian_swap_if_necessary(&length);
-memcpy(&artist, data + 146, length);
-
 free(data);
 ```
 
-## Banner
+# Banner
 
 The PVR format used in this game is readable with [QuickPVR](https://github.com/Volcore/quickpvr). The exact PVR format used is not yet known (there are [many choices](https://github.com/Volcore/quickpvr/blob/master/pvr.cc#L70)).
