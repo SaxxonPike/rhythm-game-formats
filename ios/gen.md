@@ -1,6 +1,6 @@
 Format used by [Dance Dance Revolution S+](https://itunes.apple.com/us/app/dancedancerevolution-s+-us/id300655935?mt=8) on iOS.
 
-Not much is known about this format interanlly. It appears to contain graphics (PVR format), an MP3 preview, an MP3 of the full song, and the song information all in one file (stored at the end).
+Not much is known about this format internally. It appears to contain graphics (PVR format), an MP3 preview, an MP3 of the full song, and the song information all in one file (stored at the end).
 
 When downloaded from the store, a hashing algorithm is used likely for file verification purposes (checksum) and then the first 8 bytes are of the file are stripped. The file is then a valid `.gen` file.
 
@@ -21,7 +21,7 @@ Offsets and descriptions of content at said offset:
 * `0x00`: song (MP3), MP3 format
 * `0x08`: preview song, MP3 format
 * `0x10`: song banner in PVR format. This may not be a very high quality image and is optimised for use with the game engine. As a result, it appears the texture is stored upside-down and mirrored horizontally. To get the correct image, a 180 degree rotation and mirror is required.
-* `0x18`: steps in [SSQ format](https://github.com/SaxxonPike/rhythm-game-formats/blob/master/ddr/ssq.md), with a chunk type 0x09 at the end storing metadata
+* `0x18`: steps in [SSQ format](/ddr/ssq.md), with a chunk type 0x09 at the end storing metadata
 * `0x20`: unknown
 * `0x28`: song information including title and artist. There are usually 3 fields that can hold a maximum of 70 characters. The first 3 bytes of each field is the length of the string (even though the fields are zero-padded, this is not what determines the end and these are not C strings). The string length is in big-endian (example: `00 00 0e` for 15). This field is not encrypted. All strings are encoded in UTF-8
 * `0x30`: unknown; size is always small (0x24 (36) bytes as an example)
