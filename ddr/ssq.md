@@ -159,3 +159,7 @@ read one by one as zero-bytes are encountered in the regular step data.
 
 No parameters are known about this chunk type. It exists here for speculation
 only.
+
+### Type 09: song metadata
+
+This section contains at least the title and artist of a song. This kind of chunk was discovered by looking at Dance Dance Revolution S+. Further details pending for this section.
