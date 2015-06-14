@@ -9,8 +9,13 @@ To date, SSQ is the most recent format used by Konami's Dance Dance Revolution
 series. Its earliest occurrence is in unreferenced files in DDR 3rd Mix Plus.
 They are first officially used in DDR 4th Mix.
 
-SSQ appears to have been developed without freeze notes in mind. It supports
-BPM changes and multiple variable sized chunks, much like a WAV file.
+SSQ appears to have been originally developed without freeze notes in mind.
+The reasoning is how early the format has been found and the hacky way it
+was implemented. Shock arrows are also implemented in a hacky way, although
+in a less intrusive manner (see below.)
+
+It supports BPM changes and multiple variable sized chunks, much like a WAV
+file.
 
 ## In a nutshell
 
@@ -139,6 +144,9 @@ Bit       Arrow
 6         Player 2 Up
 7         Player 2 Right
 ```
+
+**Note:** As of DDR X, shock arrows are part of the format, and are indicated
+by having all bits set (a value of 0xFF).
 
 On DDR MAX and later mixes, it is possible to encounter data where the step
 data has no bits set (0x00). This indicates a freeze arrow. Freeze arrow data
