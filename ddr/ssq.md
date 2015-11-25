@@ -65,7 +65,7 @@ Note that `i` must be at least 1 because deltas are used.
 DeltaOffset = TimeOffset[i] - TimeOffset[i - 1];
 DeltaTicks = TempoData[i] - TempoData[i - 1];
 TicksPerSecond = Parameter2;
-MeasureLength = 1024;
+MeasureLength = 4096;
 
 BPM = (DeltaOffset / MeasureLength) / ((DeltaTicks / TicksPerSecond) / 60);
 ```
