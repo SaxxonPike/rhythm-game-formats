@@ -67,7 +67,7 @@ DeltaTicks = TempoData[i] - TempoData[i - 1];
 TicksPerSecond = Parameter2;
 MeasureLength = 4096;
 
-BPM = (DeltaOffset / MeasureLength) / ((DeltaTicks / TicksPerSecond) / 60);
+BPM = (DeltaOffset / MeasureLength) / ((DeltaTicks / TicksPerSecond) / 240);
 ```
 
 Stops will be encoded as two consecutive entries with the same time offset, but
