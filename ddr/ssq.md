@@ -30,8 +30,8 @@ details.
 ## Chunk format
 
 There is no indication how long an SSQ file actually is. The typical method is
-to keep reading until there's no more bytes available to read, or until the
-chunk length doesn't make sense (it's less than a value of 0x0C for example.)
+to keep reading until a value of zero is read for the length. Thus, each
+SSQ file ends with four 0x00 bytes.
 
 ```
 Offset(h) Type      Length    Descrption
