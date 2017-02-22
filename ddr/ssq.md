@@ -17,6 +17,13 @@ in a less intrusive manner (see below.)
 It supports BPM changes and multiple variable sized chunks, much like a WAV
 file.
 
+There is no indication how long an SSQ file actually is. The typical method is
+to keep reading until a value of zero is read for the length. Thus, each
+SSQ file ends with four 0x00 bytes.
+
+Chunks are `dword` aligned, meaning if the data length is not a multiple of
+four before being written, it is padded up to the next multiple of four.
+
 ## In a nutshell
 
 SSQ is a series of "chunks". Each chunk has a header describing what it is
@@ -28,10 +35,6 @@ difficulty. Additional data is likely video scripting data; see below for
 details.
 
 ## Chunk format
-
-There is no indication how long an SSQ file actually is. The typical method is
-to keep reading until a value of zero is read for the length. Thus, each
-SSQ file ends with four 0x00 bytes.
 
 ```
 Offset(h) Type      Length    Descrption
