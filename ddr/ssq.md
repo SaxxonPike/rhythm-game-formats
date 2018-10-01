@@ -148,23 +148,31 @@ Bit       Arrow
 7         Player 2 Right
 ```
 
-**Note:** As of DDR X, shock arrows are part of the format, and are indicated
+#### Decoding shock arrows
+
+As of DDR X, shock arrows are part of the format, and are indicated
 by having all bits set (a value of 0xFF).
 
+#### Decoding freeze arrows
+
 On DDR MAX and later mixes, it is possible to encounter data where the step
-data has no bits set (0x00). This indicates a freeze arrow. Freeze arrow data
-is present after all the normal data. For example: a chunk with 300 steps would
-consist of 300 time offsets, 300 steps, and the freeze step data would come
-afterward, if any. You can easily determine the number of freeze steps by using
-this formula:
+data has no bits set (0x00). This indicates a special kind of arrow, such as
+a freeze. This special arrow data is present after all the normal data.
+
+The start of this data is dword-aligned after the end of all the normal
+step data above.
+
+Each time a value of `0x00` is encountered in the step data, it corresponds
+to a two-byte structure in the tacked-on extra data:
 
 ```
-StepCount = Parameter3;
-FreezeStepCount = ChunkLength - 0x0C - (StepCount * 5)
+Offset(h) Type      Length    Descrption
++00       byte      1         panels for the extra data
++01       byte      1         type of the extra data
 ```
 
-The freeze data indicates which arrows are to start the freeze, and should be
-read one by one as zero-bytes are encountered in the regular step data.
+For freezes, the type should be `0x01`, and the panel data represents which
+panels are to be interpreted as starting a freeze.
 
 ### Type 04: background change script
 
